@@ -1,6 +1,8 @@
 import entity.Order;
 import entity.OrderItem;
 import entity.Product;
+import repository.OrderRepository;
+import repository.ProductRepository;
 import repository.impl.OrderRepositoryImpl;
 import repository.impl.ProductRepositoryImpl;
 import service.InventoryService;
@@ -16,11 +18,11 @@ public class Main {
         System.out.println("E-commerce System Initialized");
         System.out.println("-----------------------------------");
 
-        ProductRepositoryImpl productRepositoryImpl = new ProductRepositoryImpl();
-        InventoryService inventoryService = new InventoryServiceImpl(productRepositoryImpl);
+        ProductRepository productRepository = new ProductRepositoryImpl();
+        InventoryService inventoryService = new InventoryServiceImpl(productRepository);
 
-        OrderRepositoryImpl orderRepositoryImpl = new OrderRepositoryImpl();
-        OrderService orderService = new OrderServiceImpl(productRepositoryImpl, orderRepositoryImpl, inventoryService);
+        OrderRepository orderRepository = new OrderRepositoryImpl();
+        OrderService orderService = new OrderServiceImpl(productRepository, orderRepository, inventoryService);
 
         Product product = new Product("Black T-shirt", 500, 1000, 5);
         try {
@@ -35,7 +37,7 @@ public class Main {
             OrderItem orderItem = new OrderItem(1, 2);
             Order newOrder = new Order(List.of(orderItem));
             orderService.placeOrder(newOrder);
-            Product orderedProduct = productRepositoryImpl.getProductById(1).orElseThrow();
+            Product orderedProduct = productRepository.getProductById(1).orElseThrow();
             System.out.println("Order placed: " + orderedProduct.getName());
         } catch (Exception e) {
             System.err.println("Error placing order: " + e.getMessage());
@@ -43,13 +45,13 @@ public class Main {
         System.out.println("-----------------------------------");
 
         System.out.println("Inventory:");
-        for (Product inventoryProduct : productRepositoryImpl.getAllProducts()) {
+        for (Product inventoryProduct : productRepository.getAllProducts()) {
             System.out.println(inventoryProduct);
         }
         System.out.println("-----------------------------------");
 
         System.out.println("Order History:");
-        for (Order pastOrder : orderRepositoryImpl.getAllOrders()) {
+        for (Order pastOrder : orderRepository.getAllOrders()) {
             System.out.println(pastOrder);
         }
         System.out.println("-----------------------------------");
@@ -63,13 +65,13 @@ public class Main {
         System.out.println("-----------------------------------");
 
         System.out.println("Inventory:");
-        for (Product inventoryProduct : productRepositoryImpl.getAllProducts()) {
+        for (Product inventoryProduct : productRepository.getAllProducts()) {
             System.out.println(inventoryProduct);
         }
         System.out.println("-----------------------------------");
 
         System.out.println("Order History:");
-        for (Order pastOrder : orderRepositoryImpl.getAllOrders()) {
+        for (Order pastOrder : orderRepository.getAllOrders()) {
             System.out.println(pastOrder);
         }
     }
