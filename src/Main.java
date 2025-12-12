@@ -14,7 +14,6 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println();
         System.out.println("E-commerce System Initialized");
         System.out.println("-----------------------------------");
 
