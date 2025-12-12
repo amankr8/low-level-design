@@ -24,18 +24,22 @@ public class Main {
         OrderRepository orderRepository = new OrderRepositoryImpl();
         OrderService orderService = new OrderServiceImpl(productRepository, orderRepository, inventoryService);
 
-        Product product = new Product("Black T-shirt", 500, 5);
+        Product product1 = new Product("Black T-shirt", 500, 5);
+        Product product2 = new Product("Blue Cap", 400, 2);
         try {
-            inventoryService.addProduct(product);
-            System.out.println("Product added: " + product.getName());
+            inventoryService.addProduct(product1);
+            System.out.println("Product added: " + product1.getName());
+            inventoryService.addProduct(product2);
+            System.out.println("Product added: " + product2.getName());
         } catch (Exception e) {
             System.err.println("Error adding product: " + e.getMessage());
         }
         System.out.println("-----------------------------------");
 
         try {
-            OrderItem orderItem = new OrderItem(1, 2);
-            Order newOrder = new Order(List.of(orderItem));
+            OrderItem orderItem1 = new OrderItem(1, 2);
+            OrderItem orderItem2 = new OrderItem(2, 1);
+            Order newOrder = new Order(List.of(orderItem1, orderItem2));
             orderService.placeOrder(newOrder);
             Product orderedProduct = productRepository.getProductById(1).orElseThrow();
             System.out.println("Order placed: " + orderedProduct.getName());
