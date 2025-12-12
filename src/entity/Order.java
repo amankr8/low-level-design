@@ -1,0 +1,69 @@
+package entity;
+
+import java.util.Date;
+import java.util.List;
+
+public class Order {
+    private int orderId;
+    private double totalAmount;
+    private Date orderDate;
+    private List<OrderItem> orderItems;
+    private OrderStatus status;
+
+    public Order(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+        this.orderDate = new Date();
+        this.status = OrderStatus.PLACED;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", totalAmount=" + totalAmount +
+                ", orderDate=" + orderDate +
+                ", orderItems=" + orderItems +
+                ", status=" + status +
+                '}';
+    }
+}
