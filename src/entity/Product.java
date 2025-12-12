@@ -3,13 +3,11 @@ package entity;
 public class Product {
     private int productId;
     private String name;
-    private double costPrice;
     private double listPrice;
     private int stock;
 
-    public Product(String name, double costPrice, double listPrice, int stock) {
+    public Product(String name, double listPrice, int stock) {
         this.name = name;
-        this.costPrice = costPrice;
         this.listPrice = listPrice;
         this.stock = stock;
     }
@@ -38,14 +36,6 @@ public class Product {
         this.name = name;
     }
 
-    public double getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(double costPrice) {
-        this.costPrice = costPrice;
-    }
-
     public double getListPrice() {
         return listPrice;
     }
@@ -59,7 +49,6 @@ public class Product {
         return "Product{" +
                 "productId=" + productId +
                 ", name='" + name + '\'' +
-                ", costPrice=" + costPrice +
                 ", listPrice=" + listPrice +
                 ", stock=" + stock +
                 '}';

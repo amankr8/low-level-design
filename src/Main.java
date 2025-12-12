@@ -24,7 +24,7 @@ public class Main {
         OrderRepository orderRepository = new OrderRepositoryImpl();
         OrderService orderService = new OrderServiceImpl(productRepository, orderRepository, inventoryService);
 
-        Product product = new Product("Black T-shirt", 500, 1000, 5);
+        Product product = new Product("Black T-shirt", 500, 5);
         try {
             inventoryService.addProduct(product);
             System.out.println("Product added: " + product.getName());
