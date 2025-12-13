@@ -2,6 +2,7 @@ package repository.impl;
 
 import entity.Order;
 import repository.OrderRepository;
+import util.RepositoryHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,17 +29,8 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public void saveOrder(Order order) {
         if (order.getOrderId() == 0) {
-            int orderId = generateUniqueOrderId();
-            order.setOrderId(orderId);
+            order.setOrderId(RepositoryHelper.getNextIdForMap(orderData));
         }
         orderData.put(order.getOrderId(), order);
-    }
-
-    private int generateUniqueOrderId() {
-        int id = 1;
-        while (orderData.containsKey(id)) {
-            id++;
-        }
-        return id;
     }
 }

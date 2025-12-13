@@ -1,6 +1,6 @@
 package entity;
 
-public class Product {
+public class Product extends Updatable {
     private int productId;
     private String name;
     private double listPrice;

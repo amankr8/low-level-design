@@ -2,6 +2,7 @@ package repository.impl;
 
 import entity.Product;
 import repository.ProductRepository;
+import util.RepositoryHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,17 +29,8 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void saveProduct(Product product) {
         if (product.getProductId() == 0) {
-            int productId = generateUniqueProductId();
-            product.setProductId(productId);
+            product.setProductId(RepositoryHelper.getNextIdForMap(productData));
         }
         productData.put(product.getProductId(), product);
-    }
-
-    private int generateUniqueProductId() {
-        int id = 1;
-        while (productData.containsKey(id)) {
-            id++;
-        }
-        return id;
     }
 }

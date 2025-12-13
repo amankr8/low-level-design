@@ -4,6 +4,8 @@ import entity.Product;
 import repository.ProductRepository;
 import service.InventoryService;
 
+import java.util.Date;
+
 public class InventoryServiceImpl implements InventoryService {
 
     private final ProductRepository productRepository;
@@ -27,6 +29,7 @@ public class InventoryServiceImpl implements InventoryService {
                 throw new Exception("Insufficient stock");
             }
             product.setStock(newStock);
+            product.setUpdateDate(new Date());
             productRepository.saveProduct(product);
         } catch (Exception e) {
             throw new Exception("Error updating stock: " + e.getMessage());

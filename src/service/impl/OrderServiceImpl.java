@@ -9,6 +9,8 @@ import repository.ProductRepository;
 import service.InventoryService;
 import service.OrderService;
 
+import java.util.Date;
+
 public class OrderServiceImpl implements OrderService {
 
     private final ProductRepository productRepository;
@@ -44,6 +46,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new Exception("Order is already cancelled");
             }
             order.setStatus(OrderStatus.CANCELLED);
+            order.setUpdateDate(new Date());
             orderRepository.saveOrder(order);
             for (OrderItem item : order.getOrderItems()) {
                 inventoryService.updateStock(item.getProductId(), item.getQuantity());

@@ -1,12 +1,17 @@
 import entity.Order;
 import entity.OrderItem;
 import entity.Product;
+import entity.User;
 import repository.OrderRepository;
 import repository.ProductRepository;
+import repository.UserRepository;
 import repository.impl.OrderRepositoryImpl;
 import repository.impl.ProductRepositoryImpl;
+import repository.impl.UserRepositoryImpl;
+import service.AuthService;
 import service.InventoryService;
 import service.OrderService;
+import service.impl.AuthServiceImpl;
 import service.impl.InventoryServiceImpl;
 import service.impl.OrderServiceImpl;
 
@@ -16,6 +21,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("E-commerce System Initialized");
         System.out.println("-----------------------------------");
+
+        UserRepository userRepository = new UserRepositoryImpl();
+        AuthService authService = new AuthServiceImpl(userRepository);
 
         ProductRepository productRepository = new ProductRepositoryImpl();
         InventoryService inventoryService = new InventoryServiceImpl(productRepository);
@@ -35,13 +43,24 @@ public class Main {
         }
         System.out.println("-----------------------------------");
 
+        User customer = new User("amankr8", "pass1234");
         try {
+            authService.signUp(customer.getUsername(), customer.getPassword());
+            System.out.println("User created: " + customer.getUsername());
+        } catch (Exception e) {
+            System.err.println("Error signing up: " + e.getMessage());
+        }
+        System.out.println("-----------------------------------");
+
+        try {
+            User user = userRepository.getUserByUsername(customer.getUsername())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
             OrderItem orderItem1 = new OrderItem(1, 2);
             OrderItem orderItem2 = new OrderItem(2, 1);
-            Order newOrder = new Order(List.of(orderItem1, orderItem2));
+            Order newOrder = new Order(user.getUserId(), List.of(orderItem1, orderItem2));
             orderService.placeOrder(newOrder);
             Product orderedProduct = productRepository.getProductById(1).orElseThrow();
-            System.out.println("Order placed: " + orderedProduct.getName());
+            System.out.println("Order placed: " + orderedProduct.getName() + ", By Customer: " + user.getUsername());
         } catch (Exception e) {
             System.err.println("Error placing order: " + e.getMessage());
         }
