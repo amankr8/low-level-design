@@ -4,6 +4,8 @@ import entity.User;
 import repository.UserRepository;
 import service.AuthService;
 
+import java.util.Base64;
+
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
@@ -18,7 +20,8 @@ public class AuthServiceImpl implements AuthService {
             if (userRepository.getUserByUsername(username).isPresent()) {
                 throw new IllegalArgumentException("Username already exists");
             }
-            User newUser = new User(username, password);
+            String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+            User newUser = new User(username, encodedPassword);
             userRepository.saveUser(newUser);
         } catch (Exception e) {
             throw new Exception("Error during sign up: " + e.getMessage());
@@ -26,7 +29,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean signIn(String username, String password) {
+    public boolean signIn(String username, String password) throws Exception {
+        try {
+            var userOpt = userRepository.getUserByUsername(username);
+            if (userOpt.isPresent()) {
+                String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+                return userOpt.get().getPassword().equals(encodedPassword);
+            }
+        } catch (Exception e) {
+            throw new Exception("Error during sign in: " + e.getMessage());
+        }
         return false;
     }
 }

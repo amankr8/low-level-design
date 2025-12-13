@@ -53,6 +53,18 @@ public class Main {
         System.out.println("-----------------------------------");
 
         try {
+            boolean signInSuccess = authService.signIn(customer.getUsername(), customer.getPassword());
+            if (signInSuccess) {
+                System.out.println("User signed in: " + customer.getUsername());
+            } else {
+                System.out.println("Sign in failed for user: " + customer.getUsername());
+            }
+        } catch (Exception e) {
+            System.err.println("Error signing in: " + e.getMessage());
+        }
+        System.out.println("-----------------------------------");
+
+        try {
             User user = userRepository.getUserByUsername(customer.getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
             OrderItem orderItem1 = new OrderItem(1, 2);
