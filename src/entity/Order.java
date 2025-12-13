@@ -1,20 +1,17 @@
 package entity;
 
-import java.util.Date;
 import java.util.List;
 
 public class Order extends Updatable {
     private int orderId;
     private int userId;
     private double totalAmount;
-    private Date orderDate;
     private List<OrderItem> orderItems;
     private OrderStatus status;
 
     public Order(int userId, List<OrderItem> orderItems) {
         this.userId = userId;
         this.orderItems = orderItems;
-        this.orderDate = new Date();
         this.status = OrderStatus.PLACED;
     }
 
@@ -42,14 +39,6 @@ public class Order extends Updatable {
         this.totalAmount = totalAmount;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }
@@ -69,10 +58,10 @@ public class Order extends Updatable {
     @Override
     public String toString() {
         return "Order{" +
-                "orderId=" + orderId +
+                super.toString() +
+                ", orderId=" + orderId +
                 ", userId=" + userId +
                 ", totalAmount=" + totalAmount +
-                ", orderDate=" + orderDate +
                 ", orderItems=" + orderItems +
                 ", status=" + status +
                 '}';

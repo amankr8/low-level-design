@@ -47,7 +47,8 @@ public class Product extends Updatable {
     @Override
     public String toString() {
         return "Product{" +
-                "productId=" + productId +
+                super.toString() +
+                ", productId=" + productId +
                 ", name='" + name + '\'' +
                 ", listPrice=" + listPrice +
                 ", stock=" + stock +

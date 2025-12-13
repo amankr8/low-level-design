@@ -18,7 +18,7 @@ import service.impl.OrderServiceImpl;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("E-commerce System Initialized");
         System.out.println("-----------------------------------");
 
@@ -89,6 +89,8 @@ public class Main {
             System.out.println(pastOrder);
         }
         System.out.println("-----------------------------------");
+
+        Thread.sleep(7500);
 
         try {
             orderService.cancelOrder(1);

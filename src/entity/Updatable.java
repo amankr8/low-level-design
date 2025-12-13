@@ -26,4 +26,12 @@ public class Updatable {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
+
+    @Override
+    public String toString() {
+        return "Updatable{" +
+                "createDate=" + createDate +
+                ", updateDate=" + updateDate +
+                '}';
+    }
 }
