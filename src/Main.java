@@ -52,27 +52,29 @@ public class Main {
         }
         System.out.println("-----------------------------------");
 
+        User loggedInUser = null;
         try {
-            boolean signInSuccess = authService.signIn(customer.getUsername(), customer.getPassword());
+            boolean signInSuccess = authService.signIn("amankr8", "pass1234");
             if (signInSuccess) {
                 System.out.println("User signed in: " + customer.getUsername());
+                loggedInUser = userRepository.getUserByUsername(customer.getUsername())
+                        .orElseThrow(() -> new Exception("User not found after sign in"));
             } else {
-                System.out.println("Sign in failed for user: " + customer.getUsername());
+                throw new Exception("Sign in failed for user: " + customer.getUsername());
             }
         } catch (Exception e) {
             System.err.println("Error signing in: " + e.getMessage());
+            return;
         }
         System.out.println("-----------------------------------");
 
         try {
-            User user = userRepository.getUserByUsername(customer.getUsername())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
             OrderItem orderItem1 = new OrderItem(1, 2);
             OrderItem orderItem2 = new OrderItem(2, 1);
-            Order newOrder = new Order(user.getUserId(), List.of(orderItem1, orderItem2));
+            Order newOrder = new Order(loggedInUser.getUserId(), List.of(orderItem1, orderItem2));
             orderService.placeOrder(newOrder);
             Product orderedProduct = productRepository.getProductById(1).orElseThrow();
-            System.out.println("Order placed: " + orderedProduct.getName() + ", By Customer: " + user.getUsername());
+            System.out.println("Order placed: " + orderedProduct.getName() + ", By Customer: " + loggedInUser.getUsername());
         } catch (Exception e) {
             System.err.println("Error placing order: " + e.getMessage());
         }
