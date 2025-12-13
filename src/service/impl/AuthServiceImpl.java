@@ -29,16 +29,21 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean signIn(String username, String password) throws Exception {
+    public User signIn(String username, String password) throws Exception {
         try {
             var userOpt = userRepository.getUserByUsername(username);
-            if (userOpt.isPresent()) {
-                String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
-                return userOpt.get().getPassword().equals(encodedPassword);
+            if (userOpt.isEmpty()) {
+                throw new RuntimeException("User not found with username: " + username);
+            }
+
+            String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+            if (userOpt.get().getPassword().equals(encodedPassword)) {
+                return userOpt.get();
+            } else {
+                throw new RuntimeException("Invalid credentials.");
             }
         } catch (Exception e) {
             throw new Exception("Error during sign in: " + e.getMessage());
         }
-        return false;
     }
 }

@@ -49,19 +49,14 @@ public class Main {
             System.out.println("User created: " + customer.getUsername());
         } catch (Exception e) {
             System.err.println("Error signing up: " + e.getMessage());
+            return;
         }
         System.out.println("-----------------------------------");
 
-        User loggedInUser = null;
+        User loggedInUser;
         try {
-            boolean signInSuccess = authService.signIn("amankr8", "pass1234");
-            if (signInSuccess) {
-                System.out.println("User signed in: " + customer.getUsername());
-                loggedInUser = userRepository.getUserByUsername(customer.getUsername())
-                        .orElseThrow(() -> new Exception("User not found after sign in"));
-            } else {
-                throw new Exception("Sign in failed for user: " + customer.getUsername());
-            }
+            loggedInUser = authService.signIn("amankr8", "pass1234");
+            System.out.println("User: " + loggedInUser.getUsername() + " - signed in successfully");
         } catch (Exception e) {
             System.err.println("Error signing in: " + e.getMessage());
             return;
