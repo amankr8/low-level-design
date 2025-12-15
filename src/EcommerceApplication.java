@@ -9,10 +9,7 @@ import service.impl.InventoryServiceImpl;
 import service.impl.OrderServiceImpl;
 
 public class EcommerceApplication {
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println("E-commerce System Initialized");
-        System.out.println("-----------------------------------");
-
+    public static void main(String[] args) {
         UserRepository userRepository = new UserRepository();
         AuthService authService = new AuthServiceImpl(userRepository);
 

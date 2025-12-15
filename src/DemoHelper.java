@@ -10,6 +10,9 @@ import java.util.List;
 
 public class DemoHelper {
     public static void runDemo(AuthService authService, InventoryService inventoryService, OrderService orderService) throws Exception {
+        System.out.println("E-commerce System Initialized");
+        System.out.println("-----------------------------------");
+
         Product product1 = new Product("Black T-shirt", 500, 5);
         Product product2 = new Product("Blue Cap", 400, 2);
         inventoryService.addProduct(product1);
