@@ -2,18 +2,19 @@ package repository.impl;
 
 import entity.Order;
 import repository.OrderRepository;
-import util.RepositoryHelper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class OrderRepositoryImpl implements OrderRepository {
+    private int nextId;
     Map<Integer, Order> orderData;
 
     public OrderRepositoryImpl() {
-        orderData = new HashMap<>();
+        nextId = 1;
+        orderData = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -29,7 +30,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public void saveOrder(Order order) {
         if (order.getOrderId() == 0) {
-            order.setOrderId(RepositoryHelper.getNextIdForMap(orderData));
+            order.setOrderId(nextId++);
         }
         orderData.put(order.getOrderId(), order);
     }

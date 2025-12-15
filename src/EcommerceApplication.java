@@ -17,7 +17,7 @@ import service.impl.OrderServiceImpl;
 
 import java.util.List;
 
-public class Main {
+public class EcommerceApplication {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("E-commerce System Initialized");
         System.out.println("-----------------------------------");

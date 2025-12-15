@@ -2,19 +2,20 @@ package repository.impl;
 
 import entity.User;
 import repository.UserRepository;
-import util.RepositoryHelper;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserRepositoryImpl implements UserRepository {
+    private int nextId;
     Map<Integer, User> userData;
     Map<String, Integer> usernameToIdMap;
 
     public UserRepositoryImpl() {
-        this.userData = new HashMap<>();
-        this.usernameToIdMap = new HashMap<>();
+        nextId = 1;
+        this.userData = new ConcurrentHashMap<>();
+        this.usernameToIdMap = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -29,7 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void saveUser(User user) {
         if (user.getUserId() == 0) {
-            user.setUserId(RepositoryHelper.getNextIdForMap(userData));
+            user.setUserId(nextId++);
         }
         userData.put(user.getUserId(), user);
         usernameToIdMap.put(user.getUsername(), user.getUserId());

@@ -2,18 +2,19 @@ package repository.impl;
 
 import entity.Product;
 import repository.ProductRepository;
-import util.RepositoryHelper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ProductRepositoryImpl implements ProductRepository {
+    private int nextId;
     Map<Integer, Product> productData;
 
     public ProductRepositoryImpl() {
-        productData = new HashMap<>();
+        nextId = 1;
+        productData = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -29,7 +30,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void saveProduct(Product product) {
         if (product.getProductId() == 0) {
-            product.setProductId(RepositoryHelper.getNextIdForMap(productData));
+            product.setProductId(nextId++);
         }
         productData.put(product.getProductId(), product);
     }
