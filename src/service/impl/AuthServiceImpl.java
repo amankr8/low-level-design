@@ -15,14 +15,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void signUp(String username, String password) throws Exception {
+    public boolean signUp(String username, String password) throws Exception {
         try {
-            if (userRepository.getUserByUsername(username).isPresent()) {
+            if (userRepository.findByUsername(username).isPresent()) {
                 throw new IllegalArgumentException("Username already exists");
             }
             String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
             User newUser = new User(username, encodedPassword);
-            userRepository.saveUser(newUser);
+            return userRepository.save(newUser) != null;
         } catch (Exception e) {
             throw new Exception("Error during sign up: " + e.getMessage());
         }
@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User signIn(String username, String password) throws Exception {
         try {
-            var userOpt = userRepository.getUserByUsername(username);
+            var userOpt = userRepository.findByUsername(username);
             if (userOpt.isEmpty()) {
                 throw new RuntimeException("User not found with username: " + username);
             }
