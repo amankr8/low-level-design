@@ -58,8 +58,8 @@ public class Order extends Updatable {
     @Override
     public String toString() {
         return "Order{" +
+                "orderId=" + orderId +
                 super.toString() +
-                ", orderId=" + orderId +
                 ", userId=" + userId +
                 ", totalAmount=" + totalAmount +
                 ", orderItems=" + orderItems +

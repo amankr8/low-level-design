@@ -5,6 +5,15 @@ public class Product extends Updatable {
     private String name;
     private double listPrice;
     private int stock;
+    private long version;
+
+    private Product(int productId, String name, double listPrice, int stock, long version) {
+        this.productId = productId;
+        this.name = name;
+        this.listPrice = listPrice;
+        this.stock = stock;
+        this.version = version;
+    }
 
     public Product(String name, double listPrice, int stock) {
         this.name = name;
@@ -44,14 +53,27 @@ public class Product extends Updatable {
         this.listPrice = listPrice;
     }
 
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
+                "productId=" + productId +
                 super.toString() +
-                ", productId=" + productId +
                 ", name='" + name + '\'' +
                 ", listPrice=" + listPrice +
                 ", stock=" + stock +
+                ", version=" + version +
                 '}';
+    }
+
+    public Product copy() {
+        return new Product(this.productId, this.name, this.listPrice, this.stock, this.version);
     }
 }

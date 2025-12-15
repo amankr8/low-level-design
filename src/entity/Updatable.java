@@ -3,7 +3,7 @@ package entity;
 import java.util.Date;
 
 public class Updatable {
-    private Date createDate;
+    private final Date createDate;
     private Date updateDate;
 
     public Updatable() {
@@ -13,10 +13,6 @@ public class Updatable {
 
     public Date getCreateDate() {
         return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
     }
 
     public Date getUpdateDate() {
@@ -29,9 +25,7 @@ public class Updatable {
 
     @Override
     public String toString() {
-        return "Updatable{" +
-                "createDate=" + createDate +
-                ", updateDate=" + updateDate +
-                '}';
+        return ", createDate=" + createDate +
+                ", updateDate=" + updateDate;
     }
 }

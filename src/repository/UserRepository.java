@@ -39,7 +39,7 @@ public class UserRepository implements BaseRepository<Integer, User> {
 
     @Override
     public User save(User user) {
-        if (user.getUserId() == 0) {
+        if (!userData.containsKey(user.getUserId())) {
             int id = nextId.getAndIncrement();
             user.setUserId(id);
         }

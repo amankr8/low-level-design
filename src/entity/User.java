@@ -48,6 +48,7 @@ public class User extends Updatable {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
+                super.toString() +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +

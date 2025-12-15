@@ -29,7 +29,7 @@ public class OrderRepository implements BaseRepository<Integer, Order> {
 
     @Override
     public Order save(Order order) {
-        if (order.getOrderId() == 0) {
+        if (!orderData.containsKey(order.getOrderId())) {
             int id = nextId.getAndIncrement();
             order.setOrderId(id);
         }
