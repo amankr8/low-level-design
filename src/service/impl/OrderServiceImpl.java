@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void cancelOrder(int orderId) {
-        Map<Integer, OrderItem> processedItemsMap = new HashMap<>();
+        Set<OrderItem> processedItems = new HashSet<>();
         int maxRetries = OptimisticRetryUtil.MAX_RETRY_ATTEMPTS;
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
             try {
@@ -68,11 +68,11 @@ public class OrderServiceImpl implements OrderService {
                     throw new IllegalArgumentException("Order is already cancelled.");
                 }
                 for (OrderItem item : order.getOrderItems()) {
-                    if (!processedItemsMap.containsKey(item.getProductId())) {
+                    if (!processedItems.contains(item)) {
                         inventoryService.updateStock(item.getProductId(), item.getQuantity());
                         OrderItem processedItem = item.copy();
                         processedItem.setQuantity(-item.getQuantity());
-                        processedItemsMap.put(item.getProductId(), processedItem);
+                        processedItems.add(item);
                     }
                 }
                 order.setStatus(OrderStatus.CANCELLED);
@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
                 // Exponential backoff before retrying
                 OptimisticRetryUtil.expBackOff(attempt);
             } catch (RuntimeException e) {
-                rollBackStockUpdates(new ArrayList<>(processedItemsMap.values()));
+                rollBackStockUpdates(new ArrayList<>(processedItems));
                 throw new OrderUpdateException("Error cancelling order: " + e.getMessage());
             }
         }
