@@ -44,7 +44,7 @@ public class OrderItem {
                 '}';
     }
 
-    public OrderItem copy() {
+    public OrderItem clone() {
         return new OrderItem(this.productId, this.quantity, this.price);
     }
 }

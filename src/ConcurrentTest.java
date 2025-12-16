@@ -7,8 +7,10 @@ import service.InventoryService;
 import service.OrderService;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ConcurrentTest {
+    private static final Logger logger = Logger.getLogger(ConcurrentTest.class.getName());
 
     public static void runTests(AuthService authService, InventoryService inventoryService, OrderService orderService) {
         authService.signUp("amankr8", "pass1234");
@@ -39,7 +41,7 @@ public class ConcurrentTest {
             thread2.join();
             thread3.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.warning("Thread interrupted: " + e.getMessage());
         }
 
         List<Order> orders = orderService.getAllOrders();

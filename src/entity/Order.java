@@ -103,7 +103,7 @@ public class Order {
         return new Order(this.orderId,
                 this.userId,
                 this.totalAmount,
-                this.orderItems.stream().map(OrderItem::copy).toList(),
+                this.orderItems.stream().map(OrderItem::clone).toList(),
                 this.status,
                 this.version
         );

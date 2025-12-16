@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
                     throw new PriceMismatchException("Price mismatch for product ID: " + item.getProductId());
                 }
                 inventoryService.updateStock(item.getProductId(), -item.getQuantity());
-                processedItems.add(item.copy());
+                processedItems.add(item.clone());
                 totalPrice += item.getPrice() * item.getQuantity();
             }
             order.setTotalAmount(totalPrice);
@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
                 for (OrderItem item : order.getOrderItems()) {
                     if (!processedItems.contains(item)) {
                         inventoryService.updateStock(item.getProductId(), item.getQuantity());
-                        OrderItem processedItem = item.copy();
+                        OrderItem processedItem = item.clone();
                         processedItem.setQuantity(-item.getQuantity());
                         processedItems.add(item);
                     }
