@@ -6,7 +6,6 @@ import entity.OrderStatus;
 import entity.Product;
 import exception.*;
 import repository.OrderRepository;
-import repository.ProductRepository;
 import service.InventoryService;
 import service.OrderService;
 import util.OptimisticRetryUtil;
@@ -17,12 +16,10 @@ import java.util.logging.Logger;
 public class OrderServiceImpl implements OrderService {
     private static final Logger logger = Logger.getLogger(OrderServiceImpl.class.getName());
 
-    private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final InventoryService inventoryService;
 
-    public OrderServiceImpl(ProductRepository productRepository, OrderRepository orderRepository, InventoryService inventoryService) {
-        this.productRepository = productRepository;
+    public OrderServiceImpl(OrderRepository orderRepository, InventoryService inventoryService) {
         this.orderRepository = orderRepository;
         this.inventoryService = inventoryService;
     }
@@ -44,8 +41,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             double totalPrice = 0;
             for (OrderItem item : order.getOrderItems()) {
-                Product product = productRepository.findById(item.getProductId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                Product product = inventoryService.getProductById(item.getProductId());
                 if (!product.getPrice().equals(item.getPrice())) {
                     throw new PriceMismatchException("Price mismatch for product ID: " + item.getProductId());
                 }

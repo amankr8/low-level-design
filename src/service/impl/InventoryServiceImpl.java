@@ -41,8 +41,7 @@ public class InventoryServiceImpl implements InventoryService {
         int maxRetries = OptimisticRetryUtil.MAX_RETRY_ATTEMPTS;
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
             try {
-                Product product = productRepository.findById(productId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                Product product = getProductById(productId);
                 int newStock = product.getStock() + changeInQuantity;
                 if (newStock < 0) {
                     throw new InsufficientStockException("Insufficient stock");

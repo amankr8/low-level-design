@@ -17,7 +17,7 @@ public class EcommerceApplication {
         InventoryService inventoryService = new InventoryServiceImpl(productRepository);
 
         OrderRepository orderRepository = new OrderRepository();
-        OrderService orderService = new OrderServiceImpl(productRepository, orderRepository, inventoryService);
+        OrderService orderService = new OrderServiceImpl(orderRepository, inventoryService);
 
         try {
             DemoHelper.runDemo(authService, inventoryService, orderService);
