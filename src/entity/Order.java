@@ -8,6 +8,15 @@ public class Order extends Updatable {
     private double totalAmount;
     private List<OrderItem> orderItems;
     private OrderStatus status;
+    private long version;
+
+    private Order(int orderId, int userId, double totalAmount, List<OrderItem> orderItems, OrderStatus status) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.totalAmount = totalAmount;
+        this.orderItems = orderItems;
+        this.status = status;
+    }
 
     public Order(int userId, List<OrderItem> orderItems) {
         this.userId = userId;
@@ -55,6 +64,14 @@ public class Order extends Updatable {
         this.status = status;
     }
 
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -65,5 +82,14 @@ public class Order extends Updatable {
                 ", orderItems=" + orderItems +
                 ", status=" + status +
                 '}';
+    }
+
+    public Order copy() {
+        return new Order(this.orderId,
+                this.userId,
+                this.totalAmount,
+                this.orderItems.stream().map(OrderItem::copy).toList(),
+                this.status
+        );
     }
 }

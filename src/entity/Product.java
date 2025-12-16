@@ -3,21 +3,21 @@ package entity;
 public class Product extends Updatable {
     private int productId;
     private String name;
-    private double listPrice;
+    private Double price;
     private int stock;
     private long version;
 
-    private Product(int productId, String name, double listPrice, int stock, long version) {
+    private Product(int productId, String name, Double price, int stock, long version) {
         this.productId = productId;
         this.name = name;
-        this.listPrice = listPrice;
+        this.price = price;
         this.stock = stock;
         this.version = version;
     }
 
-    public Product(String name, double listPrice, int stock) {
+    public Product(String name, Double price, int stock) {
         this.name = name;
-        this.listPrice = listPrice;
+        this.price = price;
         this.stock = stock;
     }
 
@@ -45,12 +45,12 @@ public class Product extends Updatable {
         this.name = name;
     }
 
-    public double getListPrice() {
-        return listPrice;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setListPrice(double listPrice) {
-        this.listPrice = listPrice;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public long getVersion() {
@@ -67,13 +67,13 @@ public class Product extends Updatable {
                 "productId=" + productId +
                 super.toString() +
                 ", name='" + name + '\'' +
-                ", listPrice=" + listPrice +
+                ", listPrice=" + price +
                 ", stock=" + stock +
                 ", version=" + version +
                 '}';
     }
 
     public Product copy() {
-        return new Product(this.productId, this.name, this.listPrice, this.stock, this.version);
+        return new Product(this.productId, this.name, this.price, this.stock, this.version);
     }
 }

@@ -1,6 +1,9 @@
 package repository;
 
 import entity.Order;
+import entity.OrderItem;
+import exception.OptimisticLockException;
+import exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -29,16 +32,40 @@ public class OrderRepository implements BaseRepository<Integer, Order> {
 
     @Override
     public Order save(Order order) {
-        if (!orderData.containsKey(order.getOrderId())) {
-            int id = nextId.getAndIncrement();
-            order.setOrderId(id);
+        if (order.getOrderId() == 0) {
+            return insert(order);
+        } else {
+            return update(order);
         }
-        orderData.put(order.getOrderId(), order);
-        return order;
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Integer productId) {
+        orderData.remove(productId);
+    }
 
+    private Order insert(Order order) {
+        int id = nextId.getAndIncrement();
+        Order newOrder = order.copy();
+        newOrder.setOrderId(id);
+        newOrder.setVersion(0);
+        orderData.put(id, newOrder);
+        return newOrder.copy();
+    }
+
+    private Order update(Order order) {
+        return orderData.compute(order.getOrderId(), (id, existingOrder) -> {
+            if (existingOrder == null) {
+                throw new ResourceNotFoundException("Order with ID: " + order.getOrderId() + " not found.");
+            }
+
+            if (existingOrder.getVersion() != order.getVersion()) {
+                throw new OptimisticLockException("Order with ID: " + order.getOrderId() + " has been modified by another transaction.");
+            }
+
+            Order updatedOrder = order.copy();
+            updatedOrder.setVersion(existingOrder.getVersion() + 1);
+            return updatedOrder;
+        }).copy();
     }
 }

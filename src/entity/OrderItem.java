@@ -5,9 +5,10 @@ public class OrderItem {
     private int quantity;
     private double price;
 
-    public OrderItem(int productId, int quantity) {
+    public OrderItem(int productId, int quantity, double price) {
         this.productId = productId;
         this.quantity = quantity;
+        this.price = price;
     }
 
     public int getProductId() {
@@ -41,5 +42,9 @@ public class OrderItem {
                 ", quantity=" + quantity +
                 ", price=" + price +
                 '}';
+    }
+
+    public OrderItem copy() {
+        return new OrderItem(this.productId, this.quantity, this.price);
     }
 }

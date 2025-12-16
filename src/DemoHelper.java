@@ -13,8 +13,8 @@ public class DemoHelper {
         System.out.println("E-commerce System Initialized");
         System.out.println("-----------------------------------");
 
-        Product product1 = new Product("Black T-shirt", 500, 5);
-        Product product2 = new Product("Blue Cap", 400, 2);
+        Product product1 = new Product("Black T-shirt", 500.0, 5);
+        Product product2 = new Product("Blue Cap", 400.0, 2);
         inventoryService.addProduct(product1);
         System.out.println("Product added: " + product1.getName());
         inventoryService.addProduct(product2);
@@ -31,8 +31,8 @@ public class DemoHelper {
         System.out.println("User: " + loggedInUser.getUsername() + " - signed in successfully");
         System.out.println("-----------------------------------");
 
-        OrderItem orderItem1 = new OrderItem(1, 2);
-        OrderItem orderItem2 = new OrderItem(2, 1);
+        OrderItem orderItem1 = new OrderItem(1, 2, product1.getPrice());
+        OrderItem orderItem2 = new OrderItem(2, 1, product2.getPrice());
         Order newOrder = new Order(loggedInUser.getUserId(), List.of(orderItem1, orderItem2));
         orderService.placeOrder(newOrder);
         Product orderedProduct = inventoryService.getProductById(1);
