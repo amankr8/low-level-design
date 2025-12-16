@@ -20,7 +20,8 @@ public class EcommerceApplication {
         OrderService orderService = new OrderServiceImpl(orderRepository, inventoryService);
 
         try {
-            DemoHelper.runDemo(authService, inventoryService, orderService);
+            // DemoHelper.runDemo(authService, inventoryService, orderService);
+            ConcurrentTest.runTests(authService, inventoryService, orderService);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

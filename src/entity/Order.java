@@ -1,21 +1,24 @@
 package entity;
 
+import java.util.Date;
 import java.util.List;
 
-public class Order extends Updatable {
+public class Order {
     private int orderId;
     private int userId;
     private double totalAmount;
     private List<OrderItem> orderItems;
     private OrderStatus status;
+    private Updatable updatable;
     private long version;
 
-    private Order(int orderId, int userId, double totalAmount, List<OrderItem> orderItems, OrderStatus status) {
+    private Order(int orderId, int userId, double totalAmount, List<OrderItem> orderItems, OrderStatus status, long version) {
         this.orderId = orderId;
         this.userId = userId;
         this.totalAmount = totalAmount;
         this.orderItems = orderItems;
         this.status = status;
+        this.version = version;
     }
 
     public Order(int userId, List<OrderItem> orderItems) {
@@ -64,6 +67,18 @@ public class Order extends Updatable {
         this.status = status;
     }
 
+    public Date getCreateDate() {
+        return updatable.getCreateDate();
+    }
+
+    public Date getUpdateDate() {
+        return updatable.getCreateDate();
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updatable.setUpdateDate(updateDate);
+    }
+
     public long getVersion() {
         return version;
     }
@@ -76,7 +91,6 @@ public class Order extends Updatable {
     public String toString() {
         return "Order{" +
                 "orderId=" + orderId +
-                super.toString() +
                 ", userId=" + userId +
                 ", totalAmount=" + totalAmount +
                 ", orderItems=" + orderItems +
@@ -84,12 +98,14 @@ public class Order extends Updatable {
                 '}';
     }
 
-    public Order copy() {
+    @Override
+    public Order clone() {
         return new Order(this.orderId,
                 this.userId,
                 this.totalAmount,
                 this.orderItems.stream().map(OrderItem::copy).toList(),
-                this.status
+                this.status,
+                this.version
         );
     }
 }

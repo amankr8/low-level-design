@@ -45,11 +45,11 @@ public class OrderRepository implements BaseRepository<Integer, Order> {
 
     private Order insert(Order order) {
         int id = nextId.getAndIncrement();
-        Order newOrder = order.copy();
+        Order newOrder = order.clone();
         newOrder.setOrderId(id);
         newOrder.setVersion(0);
         orderData.put(id, newOrder);
-        return newOrder.copy();
+        return newOrder.clone();
     }
 
     private Order update(Order order) {
@@ -62,9 +62,9 @@ public class OrderRepository implements BaseRepository<Integer, Order> {
                 throw new OptimisticLockException("Order with ID: " + order.getOrderId() + " has been modified by another transaction.");
             }
 
-            Order updatedOrder = order.copy();
+            Order updatedOrder = order.clone();
             updatedOrder.setVersion(existingOrder.getVersion() + 1);
             return updatedOrder;
-        }).copy();
+        }).clone();
     }
 }

@@ -4,7 +4,7 @@ import entity.User;
 
 public interface AuthService {
 
-    boolean signUp(String username, String password) throws Exception;
+    void signUp(String username, String password);
 
-    User signIn(String username, String password) throws Exception;
+    User signIn(String username, String password);
 }

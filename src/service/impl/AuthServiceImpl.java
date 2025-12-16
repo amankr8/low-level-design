@@ -15,21 +15,21 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean signUp(String username, String password) throws Exception {
+    public void signUp(String username, String password) {
         try {
             if (userRepository.findByUsername(username).isPresent()) {
                 throw new IllegalArgumentException("Username already exists");
             }
             String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
             User newUser = new User(username, encodedPassword);
-            return userRepository.save(newUser) != null;
-        } catch (Exception e) {
-            throw new Exception("Error during sign up: " + e.getMessage());
+            userRepository.save(newUser);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error during sign up: " + e.getMessage());
         }
     }
 
     @Override
-    public User signIn(String username, String password) throws Exception {
+    public User signIn(String username, String password) {
         try {
             var userOpt = userRepository.findByUsername(username);
             if (userOpt.isEmpty()) {
@@ -42,8 +42,8 @@ public class AuthServiceImpl implements AuthService {
             } else {
                 throw new RuntimeException("Invalid credentials.");
             }
-        } catch (Exception e) {
-            throw new Exception("Error during sign in: " + e.getMessage());
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error during sign in: " + e.getMessage());
         }
     }
 }
