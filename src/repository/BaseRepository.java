@@ -10,4 +10,6 @@ public interface BaseRepository<A, B> {
     List<B> findAll();
 
     B save(B entity);
+
+    void deleteById(A id);
 }

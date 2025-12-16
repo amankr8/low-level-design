@@ -47,4 +47,9 @@ public class UserRepository implements BaseRepository<Integer, User> {
         usernameToIdMap.put(user.getUsername(), user.getUserId());
         return user;
     }
+
+    @Override
+    public void deleteById(Integer id) {
+
+    }
 }

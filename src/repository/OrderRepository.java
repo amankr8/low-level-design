@@ -36,4 +36,9 @@ public class OrderRepository implements BaseRepository<Integer, Order> {
         orderData.put(order.getOrderId(), order);
         return order;
     }
+
+    @Override
+    public void deleteById(Integer id) {
+
+    }
 }

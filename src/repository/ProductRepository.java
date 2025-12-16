@@ -42,6 +42,11 @@ public class ProductRepository implements BaseRepository<Integer, Product> {
         }
     }
 
+    @Override
+    public void deleteById(Integer productId) {
+        productData.remove(productId);
+    }
+
     private Product insert(Product product) {
         int id = nextId.getAndIncrement();
         Product newProduct = product.copy();
