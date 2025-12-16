@@ -1,7 +1,6 @@
 package repository;
 
 import entity.Order;
-import entity.OrderItem;
 import exception.OptimisticLockException;
 import exception.ResourceNotFoundException;
 

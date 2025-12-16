@@ -1,12 +1,12 @@
 package service.impl;
 
-import config.GlobalConfig;
 import entity.Product;
 import exception.InsufficientStockException;
 import exception.OptimisticLockException;
 import exception.ResourceNotFoundException;
 import repository.ProductRepository;
 import service.InventoryService;
+import util.OptimisticRetryUtil;
 
 import java.util.ConcurrentModificationException;
 import java.util.Date;
@@ -38,7 +38,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public void updateStock(int productId, int changeInQuantity) {
-        int maxRetries = GlobalConfig.MAX_RETRY_ATTEMPTS, baseDelay = GlobalConfig.TIMEOUT_MILLISECONDS;
+        int maxRetries = OptimisticRetryUtil.MAX_RETRY_ATTEMPTS;
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
             try {
                 Product product = productRepository.findById(productId)
@@ -57,14 +57,7 @@ public class InventoryServiceImpl implements InventoryService {
                 }
 
                 // Exponential backoff before retrying
-                int delay = Math.min(baseDelay * (1 << (attempt - 1)), 5000);
-
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException("Thread interrupted during backoff delay.");
-                }
+                OptimisticRetryUtil.expBackOff(attempt);
             }
         }
     }
